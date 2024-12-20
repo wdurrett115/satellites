@@ -2,6 +2,8 @@ package main
 
 import (
 	"flag"
+	"html/template"
+	"log"
 	"log/slog"
 	"net/http"
 	"os"
@@ -9,7 +11,15 @@ import (
 )
 
 func home(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("OK"))
+	tmpl, err := template.ParseFiles("home.html")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = tmpl.Execute(w, "home")
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func routes() http.Handler {
